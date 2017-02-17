@@ -16,12 +16,16 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from myapp import views
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', views.home, name='home'),
     url(r'^person/$', views.CreatePersonView.as_view(), name='person'),
     url(r'^person/(?P<pk>[0-9]+)$', views.UpdatePersonView.as_view()),
     url(r'^person_list/$', views.ListPersonView.as_view(), name='person_list'),
+    url(r'^my_gallery/$', views.Gallery, name='my_gallery'),
+    url(r'^my_gallery/(?P<num>[0-9]+)$', views.Sessions, name='image'),
+    url(r'^clear/$', views.Clear, name='clear'),
 ]
 
 from django.conf import settings
