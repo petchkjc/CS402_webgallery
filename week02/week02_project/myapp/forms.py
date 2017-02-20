@@ -10,7 +10,7 @@ from .models import Person
 class PersonForm(ModelForm):
 	class Meta:
 		model =  Person
-		exclude=[]
+		exclude=['session']
 
 		widgets = {
 			'dob': forms.DateInput(

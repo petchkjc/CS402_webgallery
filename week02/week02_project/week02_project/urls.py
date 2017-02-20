@@ -24,7 +24,7 @@ urlpatterns = [
     url(r'^person/(?P<pk>[0-9]+)$', views.UpdatePersonView.as_view()),
     url(r'^person_list/$', views.ListPersonView.as_view(), name='person_list'),
     url(r'^my_gallery/$', views.Gallery, name='my_gallery'),
-    url(r'^my_gallery/(?P<num>[0-9]+)$', views.Sessions, name='image'),
+    url(r'^my_gallery/(?P<imageid>[0-9]+)$', views.Sessions, name='image'),
     url(r'^clear/$', views.Clear, name='clear'),
 ]
 

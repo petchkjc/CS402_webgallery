@@ -16,6 +16,13 @@ class CreatePersonView(CreateView):
 	template_name='person.html'
 	form_class = PersonForm
 	success_url = '/'
+	def form_valid(self, form):
+		#if not self.request.session.exists(self.request.session.session_key):
+		self.request.session.create()
+		# print type(self.request.session)
+		form.instance.session=Session.objects.get(session_key=self.request.session.session_key)
+		print form.instance.session
+		return super(CreatePersonView, self).form_valid(form)
 
 class UpdatePersonView(UpdateView):
 	queryset = Person.objects.all()
@@ -30,31 +37,32 @@ class ListPersonView(ListView):
 def Gallery(request):
 	image_list = Image.objects.all().order_by('?')[:259]
 	session_list = Session.objects.all()
-
-	# request.session['x'] = request.session.get('x',0) + 1
-	# messages="x: %s"%( request.session['x'] )
 	return render(request, 'my_gallery.html', {'image_list': image_list,'session_list': session_list })
 
-def Sessions(request,num="1"):
-	number = num
+def Sessions(request,imageid="1"):
+	print type(request.session.session_key)
+	print request.session.session_key
 
-	i = len(Person.objects.all()) 					# always new user
-	i=i+14
-	obj = Person.objects.get(pk=i).pk				# get pk from Person
-	listdb = request.session.get("key",[obj])
+	if request.session.session_key:
+		person_id=Person.objects.get(session__pk=request.session.session_key).id
+	else:
+		return redirect('person')
 
-	if obj == obj:
-		listdb.append(number)
+	request.session["person_id"]=person_id
+	listdb = request.session.get("image_id",[])
+	print listdb
+	print type(listdb)
 
-	request.session["key"] = listdb
-
-	if len(listdb)==8:
+	if len(listdb)==1:
 		request.session.set_expiry(10)
+	listdb.append(imageid)
+
+	request.session["image_id"] = listdb
 
 	for i in Session.objects.all():
 		print SessionStore().decode(i.session_data)
 
-	return render(request, 'image.html', {'image_show': Image.objects.get(id=number),'listdb': listdb,'user_id': obj })
+	return render(request, 'image.html', {'image_show': Image.objects.get(id=imageid),'listdb': listdb,'user_id': person_id })
 
 def Clear(request):
 	try:
