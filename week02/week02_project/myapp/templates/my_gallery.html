@@ -11,11 +11,11 @@
 <div class="col-sm-1"></div>
 	<center>
 		<div class="col-sm-10">
-				{% for i in image_list %}
-					<a href="{% url 'image' i.id %} ">
-						<img src="{{i.image.url}}"  height="250" width="250">
-					</a>
-				{% endfor %}
+					{% for i in image_list|slice:":10" %}
+							<a href="{% url 'image' i.id %} ">
+								<img src="{{i.image.url}}"  height="195" width="195">
+							</a>
+					{% endfor %}
 		</div>
 	</center>
 <div class="col-sm-1"></div>

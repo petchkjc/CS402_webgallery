@@ -40,6 +40,7 @@ def Gallery(request):
 	return render(request, 'my_gallery.html', {'image_list': image_list,'session_list': session_list })
 
 def Sessions(request,imageid="1"):
+	image_list = Image.objects.all().order_by('?')[:259]
 	print type(request.session.session_key)
 	print request.session.session_key
 
@@ -62,7 +63,7 @@ def Sessions(request,imageid="1"):
 	for i in Session.objects.all():
 		print SessionStore().decode(i.session_data)
 
-	return render(request, 'image.html', {'image_show': Image.objects.get(id=imageid),'listdb': listdb,'user_id': person_id })
+	return render(request, 'image.html', {'image_show': Image.objects.get(id=imageid),'listdb': listdb,'user_id': person_id, 'image_list': image_list })
 
 def Clear(request):
 	try:
